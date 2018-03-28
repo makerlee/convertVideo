@@ -1,0 +1,42 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+    <style type="text/css">
+        .main{
+            width: 1000px;
+            height: 500px;
+            border: 1px dashed #00b4ef;
+            margin: 50px auto;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>欢迎你,{{ user }}</h1>
+    <div class="main">
+
+        <input id="originURL" type="text" name="originURL">
+        <button name="cv" onclick="convert()">转换</button>
+
+    </div>
+</body>
+</html>
+  <script type="text/javascript">
+        function convert() {
+            var aaa = $("#originURL").val();
+            $.ajax({
+                method:'post',
+                url:'http://127.0.0.1:8000/convertURL',
+                data:"originalURL="+aaa,
+                dataType:'json',
+                success:function (data) {
+                    alert(data.cover);
+                }
+            });
+        }
+    </script>
