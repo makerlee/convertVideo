@@ -34,11 +34,14 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_demo',
+    'django.contrib.sessions',
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SESSION_SAVE_EVERY_REQUEST = True
 
 ROOT_URLCONF = 'django_demo.urls'
 

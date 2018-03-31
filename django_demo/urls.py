@@ -22,4 +22,6 @@ urlpatterns = [
     path('', view.to_login),
     path('login', view.login),
     path('convertURL', view.convertURL),
+    path('index', view.index),
+    path('signout', view.signout),
 ]
