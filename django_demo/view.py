@@ -44,5 +44,4 @@ def convertURL(request):
         return HttpResponse(json.dumps(fail), content_type="application/json")
     client = GetVideo(link=original)
     data = client.get_data()
-    print(data)
     return HttpResponse(json.dumps(data), content_type="application/json")

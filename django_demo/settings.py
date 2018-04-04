@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'b5ea%64)g(laepbxov4#^j0%q$and2-f01-xtq7jlq*%=8n3v7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '120.55.56.152']
 
 
 # Application definition
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_demo',
@@ -123,5 +122,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
+STATIC_ROOT = ''
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (os.path.join('static'), )
