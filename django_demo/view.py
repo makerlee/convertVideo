@@ -1,9 +1,16 @@
+import logging
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 import json
 from django_demo.GetVideo import GetVideo
 
+
+logging.basicConfig(level=logging.ERROR,
+                    filename='d://test.log',
+                    filemode='w',
+                    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 def to_login(request):
     return render(request=request, template_name="login.html", context={"a": "aaa"})
@@ -40,6 +47,7 @@ def convertURL(request):
         "retDesc": "你输出的网址不合法"
     }
     original = request.POST['originalURL']
+    logging.error("fetch "+original)
     if original.strip() == "":
         return HttpResponse(json.dumps(fail), content_type="application/json")
     client = GetVideo(link=original)

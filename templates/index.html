@@ -5,120 +5,104 @@
 <head>
     <meta charset="UTF-8">
     <title>视频转换</title>
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
     <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
     <style type="text/css">
-        body{
+        body {
             margin: 0px;
             background-color: #f0f0f0;
         }
-        #header{
-            width: 1000px;
-            height: 50px;
-            margin: 10px auto;
-        }
-        .main{
-            width: 1000px;
-            height: 600px;
-            border: 1px dashed #00b4ef;
-            margin: 0px auto;;
-            padding: 0;
-        }
-        #content{
-            width: 500px;
-            min-height: 300px;
-        }
         #footer {
-                height: 40px;
-                line-height: 40px;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-                text-align: center;
-                background: #333;
-                color: #fff;
-                font-family: Arial;
-                font-size: 12px;
-                letter-spacing: 1px;
-            }
+            height: 40px;
+            line-height: 40px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background: #333;
+            color: #fff;
+            font-family: Arial;
+            font-size: 12px;
+            letter-spacing: 1px;
+
+        }
     </style>
 </head>
 <body>
-    <div id="header">
-        <p align="right">欢迎你,{{ user }}&nbsp;&nbsp;<a href="#" onclick="signOut()">安全退出</a></p>
-    </div>
-    <div class="main">
-        <!--
-        <h3>本站已支持解析下载今日头条、西瓜视频、内涵段子、抖音、快手、火山、微博、秒拍、小咖秀、
-            晃咖、美拍、网易云音乐、muse(musical.ly)、Flipagram、
-            陌陌、映客、小影、阳光宽频等平台的视频, 请通过页面顶部导航菜单选择.</h3>
-        -->
-        <p>请输入视频地址</p>
-        <input id="originURL" type="text" name="originURL" style="width: 700px">
-        <button name="cv" onclick="convert()">转换</button>
-        <!--
-        <button name="cl" onclick="clear()">清空</button>
-        -->
-        <div id="content">
-            <p id="video">
-                <a href="" hidden="hidden" id="down">下载</a>
-            </p>
-
-            <img id="cover" src="" hidden="hidden">
+<ol class="breadcrumb text-right" style="padding-right: 6%">
+    <li>欢迎你,{{ user }} <span>/</span> <a href="#" onclick="signOut()">安全退出</a></li>
+</ol>
+<div style="padding: 0 6%">
+    <div class="page-header">
+        <h3>
+            <small>请输入视频地址:</small>
+        </h3>
+        <div class="input-group">
+            <input type="text" name="originURL" id="originURL" class="form-control" placeholder="Video Url"
+                   aria-describedby="basic-addon2">
+            <span name="cv" onclick="convert()" class="input-group-addon" id="basic-addon2" style="cursor: pointer">转换</span>
         </div>
     </div>
-    <div id="footer">
-        Copyright &copy; 2018 makermade提供技术支持
+    <div id="content">
+        <p id="video">
+            <a href="" hidden="hidden" id="down">下载</a>
+        </p>
+        <img id="cover" src="" hidden="hidden">
     </div>
+</div>
+<div id="footer">
+    Copyright &copy; 2018 makermade提供技术支持
+</div>
 </body>
 <script type="text/javascript">
-        function convert() {
-            var aaa = $("#originURL").val();
-            $.ajax({
-                method:'post',
-                url:'http://{{ request.get_host }}/convertURL',
-                data:"originalURL="+aaa,
-                dataType:'json',
-                success:function (data) {
-                    console.log(data);
-                    if(data.retCode === 200){
-                        var video = data.data.video;
-                        $("#down").attr("href","http:"+video);
-                        $("#down").show();
+    function convert() {
+        var aaa = $("#originURL").val();
+        $.ajax({
+            method: 'post',
+            url: 'http://{{ request.get_host }}/convertURL',
+            data: "originalURL=" + aaa,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.retCode === 200) {
+                    var video = data.data.video;
+                    $("#down").attr("href", "http:" + video);
+                    $("#down").show();
 
-                        //封面展示
-                        var cover = data.data.cover;
-                        if (cover){
-                            $("#cover").attr("src",cover).show();
-                        }
-                    }else{
-                        $("#originURL").val("");
-                        alert(data.retDesc);
+                    //封面展示
+                    var cover = data.data.cover;
+                    if (cover) {
+                        $("#cover").attr("src", cover).show();
                     }
+                } else {
+                    $("#originURL").val("");
+                    alert(data.retDesc);
+                }
+            }
+        });
+    }
+
+    function clear() {
+        $("#down").hide();
+        $("#cover").hide();
+    }
+
+    function signOut() {
+        if (window.confirm("你确定要退出么?")) {
+            $.ajax({
+                method: 'get',
+                url: 'http://{{ request.get_host }}/signout',
+                data: "aaa=" + 111,
+                dataType: 'json',
+                success: function (data) {
+                    window.location.href = "http://{{ request.get_host }}/#";
+                    console.log(data);
+                    return true;
                 }
             });
+        } else {
+            return false;
         }
-
-        function clear() {
-            $("#down").hide();
-            $("#cover").hide();
-        }
-
-        function signOut() {
-            if (window.confirm("你确定要退出么?")){
-                $.ajax({
-                    method:'get',
-                    url:'http://{{ request.get_host }}/signout',
-                    data:"aaa="+111,
-                    dataType:'json',
-                    success:function (data) {
-                        window.location.href = "http://{{ request.get_host }}/#";
-                        console.log(data);
-                        return true;
-                    }
-                });
-            }else {
-                return false;
-            }
-        }
-    </script>
+    }
+</script>
 </html>
